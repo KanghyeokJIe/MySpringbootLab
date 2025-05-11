@@ -68,7 +68,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- ✅ Lombok 의존성 -->
+		<!-- ✅ Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -76,7 +76,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- ✅ ConfigurationProperties 자동완성용 processor (선택) -->
+		<!-- ✅ ConfigurationProperties 자동완성용 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -88,6 +88,20 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- ✅ Jakarta Bean Validation API -->
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+		<!-- ✅ Hibernate Validator (구현체) -->
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -104,7 +118,7 @@
 
 	<build>
 		<plugins>
-			<!-- ✅ Lombok 사용 시 필수: annotationProcessor 설정 -->
+			<!-- ✅ Lombok용 annotationProcessor 설정 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -122,7 +136,6 @@
 				</configuration>
 			</plugin>
 
-			<!-- ❌ Lombok 제외 설정 제거됨 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

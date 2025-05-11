@@ -2,12 +2,14 @@ package com.rookies3.MySpringbootLab.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "books")
 @Getter @Setter
+@DynamicUpdate
 public class Book {
 
     @Id
