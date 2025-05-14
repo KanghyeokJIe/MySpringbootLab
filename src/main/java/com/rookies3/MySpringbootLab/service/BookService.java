@@ -1,6 +1,8 @@
 package com.rookies3.MySpringbootLab.service;
 
 import com.rookies3.MySpringbootLab.controller.dto.BookDTO;
+import com.rookies3.MySpringbootLab.controller.dto.BookDetailPatchRequest;
+import com.rookies3.MySpringbootLab.controller.dto.PatchRequest;
 import com.rookies3.MySpringbootLab.entity.Book;
 import com.rookies3.MySpringbootLab.entity.BookDetail;
 import com.rookies3.MySpringbootLab.exception.BusinessException;
@@ -144,4 +146,48 @@ public class BookService {
         }
         bookRepository.deleteById(id);
     }
+    @Transactional
+    public BookDTO.Response patchBook(Long id, PatchRequest request) {
+        Book book = bookRepository.findByIdWithBookDetail(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "Book", "id", id));
+
+        // 🔹 Book 필드들 일부 수정
+        if (request.getTitle() != null) {
+            book.setTitle(request.getTitle());
+        }
+
+        if (request.getAuthor() != null) {
+            book.setAuthor(request.getAuthor());
+        }
+
+        if (request.getPrice() != null) {
+            book.setPrice(request.getPrice());
+        }
+
+        if (request.getPublishDate() != null) {
+            book.setPublishDate(request.getPublishDate());
+        }
+
+        if (request.getIsbn() != null && !request.getIsbn().equals(book.getIsbn())) {
+            if (bookRepository.existsByIsbn(request.getIsbn())) {
+                throw new BusinessException(ErrorCode.ISBN_DUPLICATE, request.getIsbn());
+            }
+            book.setIsbn(request.getIsbn());
+        }
+
+        // 🔹 BookDetail 필드 일부 수정
+        BookDetailPatchRequest detailReq = request.getDetailRequest();
+        if (detailReq != null) {
+            BookDetail detail = book.getBookDetail();
+            if (detailReq.getDescription() != null) detail.setDescription(detailReq.getDescription());
+            if (detailReq.getLanguage() != null) detail.setLanguage(detailReq.getLanguage());
+            if (detailReq.getPageCount() != null) detail.setPageCount(detailReq.getPageCount());
+            if (detailReq.getPublisher() != null) detail.setPublisher(detailReq.getPublisher());
+            if (detailReq.getCoverImageUrl() != null) detail.setCoverImageUrl(detailReq.getCoverImageUrl());
+            if (detailReq.getEdition() != null) detail.setEdition(detailReq.getEdition());
+        }
+
+        return BookDTO.Response.fromEntity(book);
+    }
+
 }
