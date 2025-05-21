@@ -1,24 +1,20 @@
 package com.rookies3.MySpringbootLab.controller;
 
 import com.rookies3.MySpringbootLab.controller.dto.BookDTO;
-import com.rookies3.MySpringbootLab.controller.dto.BookDetailPatchRequest;
-import com.rookies3.MySpringbootLab.controller.dto.PatchRequest;
 import com.rookies3.MySpringbootLab.service.BookService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
-public class BookController {
+public class BookDetailController {
 
     private final BookService bookService;
 
@@ -71,23 +67,4 @@ public class BookController {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<BookDTO.Response> patchBook(@PathVariable Long id,
-                                                      @RequestBody PatchRequest request) {
-        BookDTO.Response response = bookService.patchBook(id, request);
-        return ResponseEntity.ok(response);
-    }
-
-    @PatchMapping("/{id}/detail")
-    public ResponseEntity<BookDTO.Response> patchBookDetail(@PathVariable Long id,
-                                                            @RequestBody BookDetailPatchRequest request) {
-        // BookDetail만 따로 수정할 수 있도록 PatchRequest에 감싸서 호출
-        PatchRequest patchRequest = new PatchRequest();
-        patchRequest.setDetailRequest(request);
-
-        BookDTO.Response response = bookService.patchBook(id, patchRequest);
-        return ResponseEntity.ok(response);
-    }
-
 }

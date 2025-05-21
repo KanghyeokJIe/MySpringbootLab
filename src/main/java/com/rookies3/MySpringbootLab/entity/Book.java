@@ -1,10 +1,7 @@
 package com.rookies3.MySpringbootLab.entity;
 
-import com.rookies3.MySpringbootLab.entity.BookDetail;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
-
 import java.time.LocalDate;
 
 @Entity
@@ -39,4 +36,9 @@ public class Book {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private BookDetail bookDetail;
+
+    // 🔽 새로 추가된 Publisher 연관관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
 }
